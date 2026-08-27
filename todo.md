@@ -9,3 +9,10 @@
 - [x] Implement the 10-day Powerlines installable mobile PWA flow with local-first reflection storage, dashboard, and streak tracking.
 - [x] Validate and save a checkpoint for the installable mobile PWA.
 - [ ] Deliver both prototype versions and the reusable skill.
+- [x] Check out manus/flutter-preview and inspect the existing repository structure and Flutter toolchain.
+- [x] Create the mobile Flutter project with offline Hive and SharedPreferences persistence, GoRouter routing, exact Powerlines content, and bundled assets.
+- [x] Implement all eight Powerlines screens with rail navigation, 10-day progress dots, index overlay, private reflection review, and streak calculation.
+- [x] Add the GitHub Pages workflow for Flutter Web on the gh-pages branch.
+- [x] Run Flutter analysis, dependency resolution, release web build, and a Samsung-compatible arm64 Android APK build.
+- [ ] Publish the Flutter Web artifact to GitHub Pages and expose a Manus live preview.
+- [ ] Upload the arm64 Android APK and provide the three requested URLs.
