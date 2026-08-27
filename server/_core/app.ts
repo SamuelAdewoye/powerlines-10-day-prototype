@@ -4,7 +4,6 @@ import { registerOAuthRoutes } from "./oauth.js";
 import { registerStorageProxy } from "./storageProxy.js";
 import { appRouter } from "../routers.js";
 import { createContext } from "./context.js";
-import { serveStatic } from "./vite.js";
 
 /**
  * Creates the Express app without binding to a port.
@@ -35,6 +34,7 @@ export async function createApp(): Promise<Express> {
   // to the serverless function's /var/task and return 500.
   const isVercel = process.env.VERCEL === "1";
   if (!isVercel && process.env.NODE_ENV !== "development") {
+    const { serveStatic } = await import("./vite.js");
     serveStatic(app);
   }
 
