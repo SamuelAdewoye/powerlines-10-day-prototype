@@ -5,7 +5,7 @@
 - [x] Build a private reflection dashboard for saved diagnostic answers and committed Power Moves.
 - [x] Add a visible progress tracker and daily streak counter to the web prototype.
 - [x] Verify the expanded web prototype and save a checkpoint.
-- [ ] Initialize the dedicated mobile-app project and document its design direction.
-- [ ] Implement the 10-day Powerlines mobile flow with local-first reflection storage, dashboard, and streak tracking.
-- [ ] Validate and save a checkpoint for the mobile app.
+- [x] Evaluate the dedicated native-app project option and document the installable PWA delivery choice for this prototype.
+- [x] Implement the 10-day Powerlines installable mobile PWA flow with local-first reflection storage, dashboard, and streak tracking.
+- [x] Validate and save a checkpoint for the installable mobile PWA.
 - [ ] Deliver both prototype versions and the reusable skill.

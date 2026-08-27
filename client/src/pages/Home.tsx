@@ -19,6 +19,11 @@ type Commitment = {
   timestamp: string;
 };
 
+type DeferredInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+};
+
 type SavedPractice = {
   unlockedDay: number;
   firstPracticeAt?: string;
@@ -223,6 +228,7 @@ export default function Home() {
   const [moveNote, setMoveNote] = useState("");
   const [indexOpen, setIndexOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<DeferredInstallPromptEvent | null>(null);
 
   useEffect(() => {
     try {
@@ -248,6 +254,15 @@ export default function Home() {
     applyHashRoute();
     window.addEventListener("hashchange", applyHashRoute);
     return () => window.removeEventListener("hashchange", applyHashRoute);
+  }, []);
+
+  useEffect(() => {
+    const captureInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as DeferredInstallPromptEvent);
+    };
+    window.addEventListener("beforeinstallprompt", captureInstallPrompt);
+    return () => window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
   }, []);
 
   useEffect(() => {
@@ -344,6 +359,13 @@ export default function Home() {
     setScreen("reflection");
   };
 
+  const installPractice = async () => {
+    if (!installPrompt) return;
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+    setInstallPrompt(null);
+  };
+
   return (
     <main className={`powerlines-app ${screen === "secret" ? "secret-surface" : ""}`}>
       <aside className="practice-rail" aria-label="Powerlines practice navigation">
@@ -391,6 +413,11 @@ export default function Home() {
                 BEGIN DAY {formatDay(unlockedDay)} <ArrowRight size={18} />
               </button>
               <p className="prototype-note">Demo pacing: recording a Power Move opens the next day. Your reflections stay in this browser.</p>
+              {installPrompt ? (
+                <button className="install-command" onClick={installPractice}>INSTALL ON THIS DEVICE</button>
+              ) : (
+                <p className="install-note">MOBILE VERSION: Add Powerlines to your home screen for a standalone practice.</p>
+              )}
             </div>
             <div className="welcome-art" aria-hidden="true">
               <img src="/manus-storage/powerlines-hero-redline_dfbd5dc5.jpg" alt="" />
