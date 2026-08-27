@@ -5,12 +5,14 @@ import {
   ArrowRight,
   BookOpen,
   Check,
+  ListChecks,
   LockKeyhole,
   RotateCcw,
   X,
 } from "lucide-react";
+import ReflectionDashboard, { type ReflectionRecord } from "@/components/ReflectionDashboard";
 
-type Screen = "welcome" | "secret" | "story" | "lessons" | "quiz" | "move" | "complete";
+type Screen = "welcome" | "secret" | "story" | "lessons" | "quiz" | "move" | "complete" | "reflection";
 
 type Commitment = {
   note: string;
@@ -19,6 +21,7 @@ type Commitment = {
 
 type SavedPractice = {
   unlockedDay: number;
+  firstPracticeAt?: string;
   responses: Record<number, string[]>;
   commitments: Record<number, Commitment>;
 };
@@ -213,6 +216,7 @@ export default function Home() {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [activeDay, setActiveDay] = useState(1);
   const [unlockedDay, setUnlockedDay] = useState(1);
+  const [firstPracticeAt, setFirstPracticeAt] = useState<string | undefined>();
   const [responses, setResponses] = useState<Record<number, string[]>>({});
   const [commitments, setCommitments] = useState<Record<number, Commitment>>({});
   const [draftAnswers, setDraftAnswers] = useState(["", "", ""]);
@@ -226,6 +230,7 @@ export default function Home() {
       if (stored) {
         const parsed = JSON.parse(stored) as SavedPractice;
         setUnlockedDay(Math.min(Math.max(parsed.unlockedDay || 1, 1), 10));
+        setFirstPracticeAt(parsed.firstPracticeAt);
         setResponses(parsed.responses || {});
         setCommitments(parsed.commitments || {});
       }
@@ -237,13 +242,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const applyHashRoute = () => {
+      if (window.location.hash === "#record") setScreen("reflection");
+    };
+    applyHashRoute();
+    window.addEventListener("hashchange", applyHashRoute);
+    return () => window.removeEventListener("hashchange", applyHashRoute);
+  }, []);
+
+  useEffect(() => {
     if (!hydrated) return;
-    const saved: SavedPractice = { unlockedDay, responses, commitments };
+    const saved: SavedPractice = { unlockedDay, firstPracticeAt, responses, commitments };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-  }, [commitments, hydrated, responses, unlockedDay]);
+  }, [commitments, firstPracticeAt, hydrated, responses, unlockedDay]);
 
   const day = DAYS[activeDay - 1];
   const completedCount = useMemo(() => Object.keys(commitments).length, [commitments]);
+  const reflectionRecords = useMemo<ReflectionRecord[]>(
+    () => DAYS.map((item, index) => ({
+      day: index + 1,
+      secret: item.secret,
+      questions: item.questions,
+      answers: responses[index + 1] || ["", "", ""],
+      commitment: commitments[index + 1],
+    })).filter((record) => record.commitment || record.answers.some((answer) => answer.trim())),
+    [commitments, responses],
+  );
   const isFinalDay = activeDay === DAYS.length;
 
   useEffect(() => {
@@ -273,6 +297,7 @@ export default function Home() {
   const commitPowerMove = () => {
     if (!moveNote.trim()) return;
     const timestamp = new Date().toISOString();
+    if (!firstPracticeAt) setFirstPracticeAt(timestamp);
     setCommitments((previous) => ({
       ...previous,
       [activeDay]: { note: moveNote.trim(), timestamp },
@@ -286,6 +311,7 @@ export default function Home() {
   const restartDemo = () => {
     window.localStorage.removeItem(STORAGE_KEY);
     setUnlockedDay(1);
+    setFirstPracticeAt(undefined);
     setResponses({});
     setCommitments({});
     setActiveDay(1);
@@ -306,12 +332,22 @@ export default function Home() {
     const currentIndex = sequence.indexOf(screen);
     if (currentIndex > 0) setScreen(sequence[currentIndex - 1]);
     if (screen === "secret") setScreen("welcome");
+    if (screen === "reflection") {
+      window.history.replaceState(null, "", window.location.pathname);
+      setScreen("welcome");
+    }
+  };
+
+  const openReflection = () => {
+    setIndexOpen(false);
+    window.history.replaceState(null, "", "#record");
+    setScreen("reflection");
   };
 
   return (
     <main className={`powerlines-app ${screen === "secret" ? "secret-surface" : ""}`}>
       <aside className="practice-rail" aria-label="Powerlines practice navigation">
-        <button className="brand-button" onClick={() => setScreen("welcome")} aria-label="Return to Powerlines home">
+        <button className="brand-button" onClick={() => { window.history.replaceState(null, "", window.location.pathname); setScreen("welcome"); }} aria-label="Return to Powerlines home">
           <img src="/manus-storage/powerlines-mark_fdeccc88.png" alt="Powerlines mark" className="brand-mark" />
           <span>P/</span>
         </button>
@@ -321,16 +357,19 @@ export default function Home() {
           </button>
         )}
         <div className="rail-spacer" />
-        <button className="rail-control" onClick={() => setIndexOpen(true)} aria-label="Open practice index">
-          <BookOpen size={20} strokeWidth={1.8} />
+        <button className="rail-control" onClick={openReflection} aria-label="Open private reflection record">
+          <ListChecks size={20} strokeWidth={1.8} />
         </button>
       </aside>
 
       <section className="app-stage">
         {screen !== "welcome" && (
           <header className="day-header">
-            <span>DAY {formatDay(activeDay)} / 10</span>
-            <span>{screen === "complete" ? "COMMITMENT RECORDED" : "10-DAY DEMO"}</span>
+            <span>{screen === "reflection" ? "PRIVATE RECORD" : `DAY ${formatDay(activeDay)} / 10`}</span>
+            <div className="header-progress" aria-label={`${completedCount} of 10 Power Moves committed`}>
+              {DAYS.map((_, index) => <i key={index} className={commitments[index + 1] ? "done" : index + 1 === unlockedDay ? "active" : ""} />)}
+            </div>
+            <span>{screen === "reflection" ? `${completedCount} MOVES / LOCAL` : screen === "complete" ? "COMMITMENT RECORDED" : "10-DAY DEMO"}</span>
           </header>
         )}
 
@@ -475,11 +514,23 @@ export default function Home() {
                 {!isFinalDay && activeDay === unlockedDay && (
                   <button className="command-button" onClick={startPractice}>OPEN DAY {formatDay(unlockedDay + 1)} <ArrowRight size={18} /></button>
                 )}
-                {isFinalDay && <button className="command-button" onClick={() => setIndexOpen(true)}>REVIEW THE 10 DAYS <BookOpen size={18} /></button>}
-                <button className="text-command" onClick={() => setIndexOpen(true)}>REVISIT A PAST SECRET</button>
+                {isFinalDay && <button className="command-button" onClick={openReflection}>REVIEW THE 10 DAYS <ListChecks size={18} /></button>}
+                <button className="text-command" onClick={openReflection}>OPEN PRIVATE RECORD</button>
               </div>
             </div>
           </section>
+        )}
+
+        {screen === "reflection" && (
+          <ReflectionDashboard
+            records={reflectionRecords}
+            commitments={commitments}
+            unlockedDay={unlockedDay}
+            firstPracticeAt={firstPracticeAt}
+            onOpenDay={openDay}
+            onOpenIndex={() => setIndexOpen(true)}
+            onStart={startPractice}
+          />
         )}
       </section>
 
