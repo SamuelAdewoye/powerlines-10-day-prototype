@@ -370,7 +370,7 @@ export default function Home() {
     <main className={`powerlines-app ${screen === "secret" ? "secret-surface" : ""}`}>
       <aside className="practice-rail" aria-label="Powerlines practice navigation">
         <button className="brand-button" onClick={() => { window.history.replaceState(null, "", window.location.pathname); setScreen("welcome"); }} aria-label="Return to Powerlines home">
-          <img src="/manus-storage/powerlines-mark_fdeccc88.png" alt="Powerlines mark" className="brand-mark" />
+          <img src="/powerlines-mark_fdeccc88.png" alt="Powerlines mark" className="brand-mark" />
           <span>P/</span>
         </button>
         {screen !== "welcome" && (
@@ -420,7 +420,7 @@ export default function Home() {
               )}
             </div>
             <div className="welcome-art" aria-hidden="true">
-              <img src="/manus-storage/powerlines-hero-redline_dfbd5dc5.jpg" alt="" />
+              <img src="/powerlines-hero-redline_dfbd5dc5.jpg" alt="" />
               <div className="art-index">DAY<br />01—10</div>
             </div>
           </section>
@@ -529,7 +529,7 @@ export default function Home() {
 
         {screen === "complete" && (
           <section className="completion-screen" aria-labelledby="completion-title">
-            <img src="/manus-storage/powerlines-completion-field_bfae32e8.jpg" alt="" className="completion-art" />
+            <img src="/powerlines-completion-field_bfae32e8.jpg" alt="" className="completion-art" />
             <div className="completion-content">
               <div className="content-label light-label">DAY {formatDay(activeDay)} / COMPLETE</div>
               <h1 id="completion-title">YOU MOVED<br />THROUGH<br /><em>THE WORK.</em></h1>

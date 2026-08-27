@@ -1,4 +1,6 @@
 import type { Express } from "express";
+import fs from "fs";
+import path from "path";
 import { ENV } from "./env.js";
 
 export function registerStorageProxy(app: Express) {
@@ -10,7 +12,20 @@ export function registerStorageProxy(app: Express) {
     }
 
     if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
-      res.status(500).send("Storage proxy not configured");
+      // Fallback: serve from bundled local public assets (for Vercel without Forge)
+      const localCandidates = [
+        path.resolve(process.cwd(), "client", "public", key),
+        path.resolve(process.cwd(), "dist", "public", key),
+        path.resolve(import.meta.dirname, "..", "..", "client", "public", key),
+        path.resolve(import.meta.dirname, "public", key),
+      ];
+      for (const cand of localCandidates) {
+        if (fs.existsSync(cand)) {
+          res.sendFile(cand);
+          return;
+        }
+      }
+      res.status(404).send("Storage proxy not configured and local asset not found: " + key);
       return;
     }
 

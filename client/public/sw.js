@@ -3,7 +3,9 @@ const CACHE_NAME = "powerlines-practice-v1";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
-  "/manus-storage/powerlines-mark_fdeccc88.png"
+  "/powerlines-mark_fdeccc88.png",
+  "/powerlines-hero-redline_dfbd5dc5.jpg",
+  "/powerlines-completion-field_bfae32e8.jpg"
 ];
 
 self.addEventListener("install", (event) => {

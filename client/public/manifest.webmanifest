@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/manus-storage/powerlines-mark_fdeccc88.png",
+      "src": "/powerlines-mark_fdeccc88.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
