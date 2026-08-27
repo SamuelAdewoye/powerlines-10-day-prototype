@@ -14,5 +14,6 @@
 - [x] Implement all eight Powerlines screens with rail navigation, 10-day progress dots, index overlay, private reflection review, and streak calculation.
 - [x] Add the GitHub Pages workflow for Flutter Web on the gh-pages branch.
 - [x] Run Flutter analysis, dependency resolution, release web build, and a Samsung-compatible arm64 Android APK build.
-- [ ] Publish the Flutter Web artifact to GitHub Pages and expose a Manus live preview.
-- [ ] Upload the arm64 Android APK and provide the three requested URLs.
+- [x] Publish the Flutter Web artifact to GitHub Pages and expose a Manus live preview.
+- [ ] Upload the arm64 Android APK to transfer.sh and provide the requested direct link.
+- [x] Upload the verified arm64 Android APK to a direct CDN fallback after transfer.sh TLS connection failures.
