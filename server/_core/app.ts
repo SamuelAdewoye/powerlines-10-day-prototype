@@ -1,10 +1,10 @@
 import express, { type Express } from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "./oauth";
-import { registerStorageProxy } from "./storageProxy";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
-import { serveStatic } from "./vite";
+import { registerOAuthRoutes } from "./oauth.js";
+import { registerStorageProxy } from "./storageProxy.js";
+import { appRouter } from "../routers.js";
+import { createContext } from "./context.js";
+import { serveStatic } from "./vite.js";
 
 /**
  * Creates the Express app without binding to a port.
