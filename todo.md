@@ -17,3 +17,12 @@
 - [x] Publish the Flutter Web artifact to GitHub Pages and expose a Manus live preview.
 - [ ] Upload the arm64 Android APK to transfer.sh and provide the requested direct link.
 - [x] Upload the verified arm64 Android APK to a direct CDN fallback after transfer.sh TLS connection failures.
+
+## Documentation request
+
+- [x] Document Flutter coding decisions and architecture boundaries.
+- [x] Document the development, validation, and release workflow.
+- [x] Document the Flutter tech stack, offline persistence model, and route structure.
+- [x] Document web and Android deployment procedures, including GitHub Pages and APK delivery.
+- [x] Document known gotchas, sandbox constraints, and recovery guidance.
+- [x] Validate and push the documentation to the existing GitHub repository branch manus/flutter-preview.
