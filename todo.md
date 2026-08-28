@@ -26,3 +26,11 @@
 - [x] Document web and Android deployment procedures, including GitHub Pages and APK delivery.
 - [x] Document known gotchas, sandbox constraints, and recovery guidance.
 - [x] Validate and push the documentation to the existing GitHub repository branch manus/flutter-preview.
+
+## Documentation audit request
+
+- [x] Audit documented coding decisions against the current Flutter implementation.
+- [x] Audit documented tech stack, routes, persistence, assets, and branding against source files.
+- [x] Audit documented development, validation, and deployment workflows against manifests and CI configuration.
+- [x] Correct and validate any documentation discrepancies found during the audit.
+- [ ] Commit and push the audited documentation to manus/flutter-preview.

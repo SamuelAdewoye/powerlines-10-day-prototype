@@ -30,9 +30,7 @@ Generated directories such as `mobile/build/` are release outputs and should not
 
 ### Single controller with `ChangeNotifier`
 
-`PracticeController` is the single source of truth for mutable practice state. This deliberately follows the prior React prototype's simple state model instead of introducing Riverpod, Bloc, Redux, or another heavier state framework. Widgets receive the controller through `ChangeNotifierProvider`, read immutable values, and call small intent methods for state changes.
-
-This approach keeps the state vocabulary easy to audit: the controller owns the unlocked day, first-practice timestamp, saved responses, and commitments. It also gives the app one place to enforce day gating and persistence.
+`PracticeController` is the single source of truth for mutable practice state. This deliberately follows the prior React prototype's simple state model instead of introducing Riverpod, Bloc, Redux, or another heavier state framework. Widgets receive the controller explicitly through their constructors and use `AnimatedBuilder` where a screen needs to rebuild from controller changes; the implementation does not use `ChangeNotifierProvider` or the `provider` package. This approach keeps the state vocabulary easy to audit: the controller owns the unlocked day, first-practice timestamp, saved responses, and commitments. It also gives the app one place to enforce day gating and persistence.
 
 ### Local-first persistence with two stores
 

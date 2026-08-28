@@ -1,6 +1,6 @@
 # Powerlines — 10-Day Practice
 
-For the full architecture, coding decisions, development workflow, deployment procedure, and gotchas, see [`docs/PROJECT_DOCUMENTATION.md`](../docs/PROJECT_DOCUMENTATION.md).
+For the full architecture, coding decisions, development workflow, deployment procedure, and gotchas, see [`docs/PROJECT_DOCUMENTATION.md`](../docs/PROJECT_DOCUMENTATION.md). The documentation-to-code verification record is in [`docs/DOCUMENTATION_AUDIT.md`](../docs/DOCUMENTATION_AUDIT.md).
 
 This is a **Flutter 3.47 / Dart 3.13** mobile-first implementation of the Powerlines 10-Day Practice. It contains no backend, account service, or remote data dependency. Diagnostic answers and Power Move commitments are stored only on the active device using Hive and SharedPreferences.
 
