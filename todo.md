@@ -33,4 +33,11 @@
 - [x] Audit documented tech stack, routes, persistence, assets, and branding against source files.
 - [x] Audit documented development, validation, and deployment workflows against manifests and CI configuration.
 - [x] Correct and validate any documentation discrepancies found during the audit.
-- [ ] Commit and push the audited documentation to manus/flutter-preview.
+- [x] Commit and push the audited documentation to manus/flutter-preview.
+
+## AI-agent handoff request
+
+- [x] Inspect and document the implementation plan and current state on the main branch.
+- [x] Inspect and document the implementation plan and current state on the manus/flutter-preview branch.
+- [x] Create handoff.md with seamless AI-agent operating instructions, branch boundaries, validation evidence, deployment details, and next actions.
+- [ ] Validate, commit, and push handoff.md to the existing GitHub repository.
